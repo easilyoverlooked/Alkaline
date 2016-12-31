@@ -9,13 +9,17 @@ namespace Alkaline
     /// </summary>
     public class AlkalineGame : Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        private readonly GraphicsDeviceManager graphics;
+        private readonly InputManager input;
+        private SpriteBatch spriteBatch;
+        private Texture2D pixel;
+        private Player player;
 
         public AlkalineGame()
         {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+            this.graphics = new GraphicsDeviceManager(this);
+            this.input = new InputManager();
+            this.Content.RootDirectory = "Content";
         }
 
         /// <summary>
@@ -38,9 +42,12 @@ namespace Alkaline
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            this.pixel = new Texture2D(GraphicsDevice, 1, 1);
+            this.pixel.SetData(new Color[] { Color.White });
+            createPlayer();
         }
 
         /// <summary>
@@ -59,11 +66,14 @@ namespace Alkaline
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            this.input.Update(gameTime);
+
+            if (this.input.IsKeyDown(Keys.Escape))
+            {
                 Exit();
+            }
 
-            // TODO: Add your update logic here
-
+            this.player.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -76,8 +86,21 @@ namespace Alkaline
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // TODO: Add your drawing code here
+            this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+            this.player.Draw(spriteBatch);
+            this.spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        private void createPlayer()
+        {
+            Vector2 size = new Vector2(20f, 20f);
+            Vector2 origin = size * 0.5f;
+            Viewport viewport = GraphicsDevice.Viewport;
+            Vector2 position = new Vector2(viewport.Width / 2 - origin.X, viewport.Height / 2 - origin.Y);
+            Sprite playerSprite = new Sprite(this.pixel, size) { Position = position };
+            this.player = new Player(playerSprite, this.input) { Speed = 0.8f };
         }
     }
 }
