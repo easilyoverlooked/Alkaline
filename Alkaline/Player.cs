@@ -16,6 +16,11 @@ namespace Alkaline
 
         public float Speed { get; set; }
 
+        public Sprite Sprite
+        {
+            get { return this.sprite; }
+        }
+
         public Player(Sprite sprite, InputManager input)
         {
             this.sprite = sprite;

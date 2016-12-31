@@ -15,6 +15,8 @@ namespace Alkaline
         private Texture2D pixel;
         private Player player;
 
+        private Sprite[] blocks;
+
         public AlkalineGame()
         {
             this.graphics = new GraphicsDeviceManager(this);
@@ -48,6 +50,7 @@ namespace Alkaline
             this.pixel = new Texture2D(GraphicsDevice, 1, 1);
             this.pixel.SetData(new Color[] { Color.White });
             createPlayer();
+            createBlocks();
         }
 
         /// <summary>
@@ -74,6 +77,13 @@ namespace Alkaline
             }
 
             this.player.Update(gameTime);
+
+            Rectangle playerCollision = this.player.Sprite.Collision;
+            foreach (Sprite block in this.blocks)
+            {
+                block.Color = playerCollision.Intersects(block.Collision) ? Color.Crimson : Color.SlateBlue;
+            }
+
             base.Update(gameTime);
         }
 
@@ -87,7 +97,14 @@ namespace Alkaline
 
             // TODO: Add your drawing code here
             this.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp);
+
+            foreach (Sprite block in this.blocks)
+            {
+                block.Draw(spriteBatch);
+            }
+
             this.player.Draw(spriteBatch);
+
             this.spriteBatch.End();
 
             base.Draw(gameTime);
@@ -98,8 +115,24 @@ namespace Alkaline
             Vector2 size = new Vector2(20f, 20f);
             Viewport viewport = GraphicsDevice.Viewport;
             Vector2 position = new Vector2(viewport.Width / 2, viewport.Height / 2);
-            Sprite playerSprite = new Sprite(this.pixel, size) { Position = position };
-            this.player = new Player(playerSprite, this.input) { Speed = 0.8f };
+            Sprite sprite = new Sprite(this.pixel, size) { Position = position };
+            this.player = new Player(sprite, this.input) { Speed = 0.15f };
         }
+
+        private void createBlocks()
+        {
+            float size = 75f;
+            this.blocks = new Sprite[4];
+            for(int i = 0; i < this.blocks.Length; i++)
+            {
+                Sprite sprite = new Sprite(this.pixel, new Vector2(size, size))
+                {
+                    Position = new Vector2(2 * size * (i + 1), size),
+                    Color = Color.SlateGray
+                };
+                this.blocks[i] = sprite;
+            }
+        }
+
     }
 }

@@ -19,6 +19,21 @@ namespace Alkaline
         public float Rotation { get; set; }
         public Color Color { get; set; }    
 
+        public Rectangle Collision
+        {
+            get
+            {
+                Vector2 position = this.Position;
+                Vector2 actualScale = this.size * this.Scale;
+                Vector2 offset = this.size * this.origin;
+                return new Rectangle(
+                    (int)(position.X - offset.X),
+                    (int)(position.Y - offset.Y),
+                    (int)actualScale.X,
+                    (int)actualScale.Y);
+            }
+        }
+
         public Sprite(Texture2D texture, Vector2 size, Vector2 origin)
         {
             this.texture = texture;
@@ -35,29 +50,16 @@ namespace Alkaline
         {
             spriteBatch.Draw(
                 texture: this.texture,
-                destinationRectangle: this.destinationRectangle,
+                position: this.Position,
                 origin: this.origin,
                 color: this.Color,
                 rotation: this.Rotation,
-                scale: this.Scale);
+                scale: this.size * this.Scale);
             spriteBatch.Draw(
                 texture: this.texture,
                 position: this.Position,
                 origin: this.origin,
                 color: Color.Black);
-        }
-
-        private Rectangle destinationRectangle
-        {
-            get
-            {
-                Vector2 position = Position;
-                return new Rectangle(
-                    (int)position.X,
-                    (int)position.Y,
-                    (int)this.size.X,
-                    (int)this.size.Y);
-            }
         }
 
     }
