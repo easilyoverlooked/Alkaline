@@ -96,10 +96,10 @@ namespace Alkaline
         private void createPlayer()
         {
             Vector2 size = new Vector2(20f, 20f);
-            Vector2 origin = size * 0.5f;
+            Vector2 origin = new Vector2(0.5f, 0.5f);
             Viewport viewport = GraphicsDevice.Viewport;
-            Vector2 position = new Vector2(viewport.Width / 2 - origin.X, viewport.Height / 2 - origin.Y);
-            Sprite playerSprite = new Sprite(this.pixel, size) { Position = position };
+            Vector2 position = new Vector2(viewport.Width / 2, viewport.Height / 2);
+            Sprite playerSprite = new Sprite(this.pixel, size, origin) { Position = position };
             this.player = new Player(playerSprite, this.input) { Speed = 0.8f };
         }
     }

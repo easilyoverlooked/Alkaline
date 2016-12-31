@@ -19,10 +19,11 @@ namespace Alkaline
         public float Rotation { get; set; }
         public Color Color { get; set; }    
 
-        public Sprite(Texture2D texture, Vector2 size, Vector2 Origin)
+        public Sprite(Texture2D texture, Vector2 size, Vector2 origin)
         {
             this.texture = texture;
             this.size = size;
+            this.origin = origin;
             this.Scale = Vector2.One;
             this.Color = Color.White;
         }
@@ -38,7 +39,12 @@ namespace Alkaline
                 origin: this.origin,
                 color: this.Color,
                 rotation: this.Rotation,
-                scale: this.Scale);       
+                scale: this.Scale);
+            spriteBatch.Draw(
+                texture: this.texture,
+                position: this.Position,
+                origin: this.origin,
+                color: Color.Black);
         }
 
         private Rectangle destinationRectangle

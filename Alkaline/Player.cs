@@ -24,25 +24,37 @@ namespace Alkaline
 
         public void Update(GameTime gameTime)
         {
-            float movement = gameTime.ElapsedGameTime.Milliseconds * Speed;
-            Vector2 playerPosition = this.sprite.Position;
+            float movementSpeed = gameTime.ElapsedGameTime.Milliseconds * Speed;
+            float rotationSpeed = movementSpeed * 0.5f;
+
+            float rotation = this.sprite.Rotation;
+            Vector2 position = this.sprite.Position;
             if (this.input.IsKeyDown(Keys.W))
             {
-                playerPosition.Y -= movement;
+                position.Y -= movementSpeed;
             }
             if (this.input.IsKeyDown(Keys.S))
             {
-                playerPosition.Y += movement;
+                position.Y += movementSpeed;
             }
             if (this.input.IsKeyDown(Keys.D))
             {
-                playerPosition.X += movement;
+                position.X += movementSpeed;
             }
             if (this.input.IsKeyDown(Keys.A))
             {
-                playerPosition.X -= movement;
+                position.X -= movementSpeed;
             }
-            this.sprite.Position = playerPosition;
+            if(this.input.IsKeyDown(Keys.Q))
+            {
+                rotation -= rotationSpeed;
+            }
+            if(this.input.IsKeyDown(Keys.E))
+            {
+                rotation += rotationSpeed;
+            }
+            this.sprite.Position = position;
+            this.sprite.Rotation = rotation;
         }
 
         public void Draw(SpriteBatch spriteBatch)
