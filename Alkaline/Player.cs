@@ -24,8 +24,8 @@ namespace Alkaline
 
         public void Update(GameTime gameTime)
         {
-            float movementSpeed = gameTime.ElapsedGameTime.Milliseconds * Speed;
-            float rotationSpeed = movementSpeed * 0.5f;
+            float movementSpeed = (float)(gameTime.ElapsedGameTime.TotalMilliseconds * Speed);
+            float rotationSpeed = movementSpeed * 0.0075f;
 
             float rotation = this.sprite.Rotation;
             Vector2 position = this.sprite.Position;

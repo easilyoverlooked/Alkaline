@@ -29,8 +29,8 @@ namespace Alkaline
         }
 
         public Sprite(Texture2D texture, Vector2 size)
-            : this(texture, size, Vector2.Zero) { }
-
+            : this(texture, size, new Vector2(texture.Width / 2f, texture.Height / 2f)) { }
+         
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
