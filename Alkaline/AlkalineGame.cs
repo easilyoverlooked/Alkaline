@@ -116,7 +116,7 @@ namespace Alkaline
             Viewport viewport = GraphicsDevice.Viewport;
             Vector2 position = new Vector2(viewport.Width / 2, viewport.Height / 2);
             Sprite sprite = new Sprite(this.pixel, size) { Position = position };
-            this.player = new Player(sprite, this.input) { Speed = 0.15f };
+            this.player = new Player(sprite, this.input, viewport) { Speed = 0.15f };
         }
 
         private void createBlocks()

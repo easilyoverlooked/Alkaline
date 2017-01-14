@@ -13,7 +13,7 @@ namespace Alkaline
     {
         private readonly Sprite sprite;
         private readonly InputManager input;
-
+        private Viewport viewport { get; set; }
         public float Speed { get; set; }
 
         public Sprite Sprite
@@ -21,10 +21,11 @@ namespace Alkaline
             get { return this.sprite; }
         }
 
-        public Player(Sprite sprite, InputManager input)
+        public Player(Sprite sprite, InputManager input, Viewport inpViewport)
         {
             this.sprite = sprite;
             this.input = input;
+            this.viewport = inpViewport;
         }
 
         public void Update(GameTime gameTime)
@@ -40,7 +41,7 @@ namespace Alkaline
             }
             if (this.input.IsKeyDown(Keys.S))
             {
-                position.Y += movementSpeed;
+                position.Y += movementSpeed;    
             }
             if (this.input.IsKeyDown(Keys.D))
             {
@@ -58,6 +59,11 @@ namespace Alkaline
             {
                 rotation += rotationSpeed;
             }
+
+            //check bounds, set to boundary if moving out. 
+            position.Y = (position.Y < 0) ? 0 : (position.Y > viewport.Height) ? viewport.Height : position.Y; 
+            position.X = (position.X < 0) ? 0 : (position.X > viewport.Width) ? viewport.Width : position.X;             
+
             this.sprite.Position = position;
             this.sprite.Rotation = rotation;
         }
